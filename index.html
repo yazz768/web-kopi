@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>La Day Le - Coffee Shop</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <head>
+      <!-- Menambahkan favicon -->
+      <link rel="icon" href="img/loggo hijau.png" type="image/x-icon" />
+      <link rel="shortcut icon" href="img/loggo hijau.png" type="image/x-icon" />
+    </head>
+
+    <style>
+      body.scroll-lock {
+        overflow: hidden;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      .video-container {
+        position: relative;
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      .video-background {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        min-width: 100%;
+        min-height: 100%;
+        width: auto;
+        height: auto;
+        transform: translateX(-50%) translateY(-50%);
+        z-index: -1;
+      }
+
+      .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+      }
+
+      .title-stroke {
+        -webkit-text-stroke: 2px #508d4e;
+        color: transparent;
+        transition: all 0.5s ease;
+        display: inline-block;
+      }
+
+      .title-stroke:hover {
+        color: #427a40;
+        transform: scale(1.05);
+        text-shadow: 2px 2px 8px #398856;
+      }
+
+      .elegant-subtitle {
+        position: relative;
+        display: inline-block;
+      }
+
+      .elegant-subtitle::after {
+        content: "";
+        position: absolute;
+        bottom: -10px;
+        left: 0;
+        width: 60px;
+        height: 2px;
+        background-color: #508d4e;
+        transition: width 0.3s ease;
+      }
+
+      .elegant-subtitle:hover::after {
+        width: 100%;
+      }
+    </style>
+
+    <style>
+      .image-hover {
+        transition: transform 0.5s ease;
+      }
+
+      .image-hover:hover {
+        transform: scale(1.05);
+      }
+
+      iframe {
+        transition: filter 0.3s ease;
+      }
+
+      iframe:hover {
+        filter: none;
+      }
+
+      @keyframes slideshow {
+        0%,
+        25% {
+          opacity: 1;
+        }
+        33%,
+        100% {
+          opacity: 0;
+        }
+      }
+
+      .slide {
+        animation: slideshow 20s infinite;
+      }
+
+      .slide:nth-child(1) {
+        animation-delay: 0s;
+      }
+      .slide:nth-child(2) {
+        animation-delay: 5s;
+      }
+      .slide:nth-child(3) {
+        animation-delay: 10s;
+      }
+      .slide:nth-child(4) {
+        animation-delay: 15s;
+      }
+
+      /* Interactive Menu Title Styles */
+      .menu-title {
+        position: relative;
+        -webkit-text-stroke: 2px #508d4e;
+        color: transparent;
+        transition: all 0.5s ease;
+        cursor: pointer;
+      }
+
+      .menu-title::before {
+        content: "Our Menu";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        color: #508d4e;
+        opacity: 0;
+        transform: scale(1.1);
+        transition: all 0.5s ease;
+      }
+
+      .menu-title::after {
+        content: "";
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 3px;
+        background: #508d4e;
+        transition: all 0.5s ease;
+      }
+
+      .menu-title:hover {
+        color: #508d4e;
+        text-shadow: 0 0 10px rgba(80, 141, 78, 0.5), 0 0 20px rgba(80, 141, 78, 0.3), 0 0 30px rgba(80, 141, 78, 0.2);
+        transform: scale(1.05);
+        letter-spacing: 2px;
+      }
+
+      .menu-title:hover::before {
+        opacity: 0.5;
+        transform: scale(1);
+      }
+
+      .menu-title:hover::after {
+        width: 100%;
+      }
+
+      @keyframes glowing {
+        0% {
+          text-shadow: 0 0 10px rgba(80, 141, 78, 0.5);
+        }
+        50% {
+          text-shadow: 0 0 20px rgba(80, 141, 78, 0.7), 0 0 30px rgba(80, 141, 78, 0.5);
+        }
+        100% {
+          text-shadow: 0 0 10px rgba(80, 141, 78, 0.5);
+        }
+      }
+
+      .menu-title:hover {
+        animation: glowing 2s infinite;
+      }
+
+      /* Slideshow Container Hover Effect */
+      .feedback-slides {
+        transform-origin: center;
+        transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .feedback-slides img {
+        transform-origin: center;
+        transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        will-change: transform;
+      }
+
+      .feedback-slides:hover img {
+        transform: scale(1.1);
+      }
+
+      /* Optional: Menambahkan efek smooth pada gambar */
+      .feedback-slides::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.1);
+        opacity: 0;
+        transition: opacity 0.5s ease;
+      }
+
+      .feedback-slides:hover::after {
+        opacity: 1;
+      }
+
+      /* Menambahkan efek bayangan saat hover */
+      .feedback-slides {
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        transition: box-shadow 0.5s ease, transform 0.5s ease;
+      }
+
+      .feedback-slides:hover {
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      }
+
+      #menuShortcut {
+        animation: bounce-in 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        backdrop-filter: blur(8px);
+        border: 2px solid rgba(255, 255, 255, 0.1);
+      }
+
+      @keyframes bounce-in {
+        0% {
+          opacity: 0;
+          transform: translateY(-20px) scale(0.8);
+        }
+        50% {
+          transform: translateY(10px) scale(1.1);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      #menuShortcut::before {
+        content: "";
+        position: absolute;
+        inset: -4px;
+        background: linear-gradient(45deg, #508d4e, #3e843b, #508d4e);
+        border-radius: 9999px;
+        z-index: -1;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      #menuShortcut:hover::before {
+        opacity: 1;
+        animation: rotate 2s linear infinite;
+      }
+
+      @keyframes rotate {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      #menuShortcut.clicked {
+        animation: pulse 0.5s cubic-bezier(0.4, 0, 0.6, 1);
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(0.95);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shortcut">
+      <button
+        id="menuShortcut"
+        class="fixed top-6 right-6 z-50 bg-[#508d4e] hover:bg-[#3e843b] text-white px-6 py-3 rounded-full transition-all duration-300 transform hover:scale-105 flex items-center gap-2 group shadow-lg hover:shadow-xl"
+      >
+        <span class="relative overflow-hidden">
+          <span class="block transition-transform duration-300 group-hover:-translate-y-full">Menu</span>
+          <span class="absolute top-full left-0 block transition-transform duration-300 group-hover:-translate-y-full">Order!</span>
+        </span>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-hover:rotate-45" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M16.707 10.293a1 1 0 010 1.414l-6 6a1 1 0 01-1.414 0l-6-6a1 1 0 111.414-1.414L9 14.586V3a1 1 0 012 0v11.586l4.293-4.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+        </svg>
+      </button>
+    </div>
+    <!-- Jumbotron with Video Background -->
+    <div class="video-container">
+      <!-- Video Background -->
+      <video class="video-background" autoplay muted loop>
+        <source src="img/video-kopi.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+
+      <!-- Overlay -->
+      <div class="overlay"></div>
+
+      <!-- Content -->
+      <div class="relative h-screen flex items-center">
+        <div class="text-white px-8 md:px-16 lg:px-24 max-w-3xl">
+          <h1 class="title-stroke text-6xl md:text-8xl font-bold mb-6 tracking-wider uppercase">La Day Le</h1>
+          <p class="elegant-subtitle text-2xl md:text-3xl mb-6 font-light tracking-wide">Experience the Perfect Brew</p>
+          <p class="text-lg md:text-xl mb-12 font-light leading-relaxed opacity-90 max-w-2xl">Discover our artisanal coffee selection, carefully crafted to elevate your coffee experience to new heights of sophistication and pleasure.</p>
+          <button class="bg-[#3e843b] hover:bg-[#427a40] text-white font-bold py-4 px-12 rounded-full transition-all duration-300 transform hover:scale-105 hover:shadow-lg uppercase tracking-wider">Lihat Selengkapnya</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- About Section -->
+    <section class="py-20 bg-white">
+      <div class="container mx-auto px-4">
+        <!-- Row 1: Text Left, Image Right -->
+        <div class="flex flex-col md:flex-row items-center mb-20 gap-8">
+          <!-- Left Content -->
+          <div class="w-full md:w-1/2 pr-0 md:pr-12">
+            <h2 class="section-title text-3xl md:text-4xl font-bold text-gray-800 mb-6">Discover Our Story</h2>
+            <p class="text-gray-600 mb-6 leading-relaxed">
+              Founded in the heart of the city, La Day Le has been crafting exceptional coffee experiences since 2010. Our commitment to quality begins with selecting the finest coffee beans from sustainable sources around the world.
+            </p>
+            <p class="text-gray-600 mb-8 leading-relaxed">Each cup we serve is a testament to our dedication to the art of coffee making, combining traditional methods with modern innovation to create the perfect brew.</p>
+            <button class="bg-[#508d4e] hover:bg-[#A37B43] text-white px-8 py-3 rounded-full transition-all duration-300 hover:shadow-lg">Learn More</button>
+          </div>
+          <!-- Right Image -->
+          <div class="w-full md:w-1/2 overflow-hidden rounded-lg shadow-xl">
+            <img src="img/foto kopi.jpg" alt="Coffee brewing process" class="w-full h-auto image-hover object-cover" />
+          </div>
+        </div>
+
+        <!-- Row 2: Image Left, Text Right -->
+        <div class="flex flex-col-reverse md:flex-row items-center gap-8">
+          <!-- Left Image -->
+          <div class="w-full md:w-1/2 overflow-hidden rounded-lg shadow-xl">
+            <img src="img/foto cafe.jpg" alt="Our coffee shop ambiance" class="w-full h-auto image-hover object-cover" />
+          </div>
+          <!-- Right Content -->
+          <div class="w-full md:w-1/2 pl-0 md:pl-12">
+            <h2 class="section-title text-3xl md:text-4xl font-bold text-gray-800 mb-6">Our Passion & Expertise</h2>
+            <p class="text-gray-600 mb-6 leading-relaxed">At La Day Le, we believe that great coffee is an art form. Our master baristas are trained in the finest techniques, ensuring each cup meets our exacting standards of excellence.</p>
+            <p class="text-gray-600 mb-8 leading-relaxed">
+              We've created a warm and inviting space where coffee lovers can gather, work, or simply enjoy a moment of tranquility with their favorite brew. Our dedication to customer service is matched only by our passion for coffee.
+            </p>
+            <div class="flex items-center gap-4">
+              <div class="text-center">
+                <span class="block text-4xl font-bold text-[#C49B63]">15+</span>
+                <span class="text-gray-600">Years Experience</span>
+              </div>
+              <div class="text-center">
+                <span class="block text-4xl font-bold text-[#C49B63]">50+</span>
+                <span class="text-gray-600">Coffee Varieties</span>
+              </div>
+              <div class="text-center">
+                <span class="block text-4xl font-bold text-[#C49B63]">100%</span>
+                <span class="text-gray-600">Satisfaction</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Maps Section -->
+    <section id="maps" class="bg-black py-20">
+      <div class="container mx-auto px-4">
+        <div class="flex flex-col md:flex-row items-center gap-8">
+          <!-- Maps Container (Left Side) -->
+          <div class="w-full md:w-1/2 h-[400px] rounded-lg overflow-hidden">
+            <iframe id="gmap_canvas" class="w-full h-full" src="https://maps.google.com/maps?q=your+location&t=&z=13&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"> </iframe>
+          </div>
+
+          <!-- Location Description (Right Side) -->
+          <div class="w-full md:w-1/2 text-white pl-0 md:pl-12">
+            <h2 class="text-4xl font-bold mb-6 relative inline-block">
+              La Day Le Maps
+              <span class="absolute bottom-0 left-0 w-1/2 h-1 bg-[#508d4e]"></span>
+            </h2>
+            <p class="text-gray-300 mb-8 leading-relaxed text-lg">
+              Temukan kami di jantung kota, tempat di mana aroma kopi segar bertemu dengan suasana yang nyaman. La Day Le Coffee Shop hadir untuk memberikan pengalaman kopi terbaik untuk Anda.
+            </p>
+            <a href="https://maps.google.com/?q=your+location" target="_blank" class="inline-flex items-center space-x-2 bg-[#508d4e] hover:bg-[#427a40] text-white px-6 py-3 rounded-full transition-all duration-300 hover:shadow-lg">
+              <span>Buka di Google Maps</span>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Menu Hero Section -->
+    <section class="relative h-screen overflow-hidden">
+      <!-- Slideshow container -->
+      <div class="relative h-full">
+        <!-- Slides -->
+        <div class="slide absolute inset-0 transition-opacity duration-1000">
+          <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085" alt="Coffee and pastries" class="absolute inset-0 w-full h-full object-cover" />
+          <div class="absolute inset-0 bg-black bg-opacity-60"></div>
+        </div>
+        <div class="slide absolute inset-0 transition-opacity duration-1000 opacity-0">
+          <img src="img/menu hero.jpg" alt="Signature beverages" class="absolute inset-0 w-full h-full object-cover" />
+          <div class="absolute inset-0 bg-black bg-opacity-60"></div>
+        </div>
+        <div class="slide absolute inset-0 transition-opacity duration-1000 opacity-0">
+          <img src="https://images.unsplash.com/photo-1608649226842-f39257c9085f" alt="Breakfast spread" class="absolute inset-0 w-full h-full object-cover" />
+          <div class="absolute inset-0 bg-black bg-opacity-60"></div>
+        </div>
+        <div class="slide absolute inset-0 transition-opacity duration-1000 opacity-0">
+          <img src="https://images.unsplash.com/photo-1551024506-0bccd828d307" alt="Desserts selection" class="absolute inset-0 w-full h-full object-cover" />
+          <div class="absolute inset-0 bg-black bg-opacity-60"></div>
+        </div>
+
+        <!-- Content -->
+        <div class="relative h-full flex items-center">
+          <div class="text-white px-8 md:px-16 lg:px-24 max-w-4xl mx-auto text-center">
+            <h1 class="menu-title text-6xl md:text-8xl font-bold mb-6 tracking-wider uppercase">Our Menu</h1>
+            <p class="text-2xl md:text-3xl mb-6 font-light tracking-wide">A Culinary Journey of Flavors</p>
+            <p class="text-lg md:text-xl mb-12 font-light leading-relaxed opacity-90 max-w-2xl mx-auto">
+              Indulge in our expertly crafted menu, where every item tells a story of passion and dedication. From our signature coffee blends to delectable pastries, each creation is designed to elevate your dining experience at La Day Le.
+            </p>
+            <button class="bg-[#3e843b] hover:bg-[#1A5319] text-white font-bold py-4 px-12 rounded-full transition-all duration-300 transform hover:scale-105 hover:shadow-lg uppercase tracking-wider">Explore Menu</button>
+          </div>
+        </div>
+
+        <!-- Slide Indicators -->
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-3">
+          <button class="w-8 h-3 rounded-full bg-white transition-all duration-300"></button>
+          <button class="w-3 h-3 rounded-full bg-white/50 transition-all duration-300"></button>
+          <button class="w-3 h-3 rounded-full bg-white/50 transition-all duration-300"></button>
+          <button class="w-3 h-3 rounded-full bg-white/50 transition-all duration-300"></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Menu Order Section -->
+    <section class="py-20 bg-gray-50">
+      <div class="container mx-auto px-4">
+        <h2 class="text-4xl font-bold text-center mb-12">Our Menu Selection</h2>
+
+        <!-- Featured Items Row -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+          <!-- Featured Item 1 -->
+          <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <div class="relative">
+              <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085" alt="Signature Latte" class="w-full h-48 object-cover" />
+              <span class="absolute top-4 right-4 bg-yellow-400 text-black px-3 py-1 rounded-full text-sm font-semibold">Best Seller</span>
+            </div>
+            <div class="p-6">
+              <h3 class="text-xl font-bold text-gray-900 mb-2">Signature Latte</h3>
+              <p class="text-gray-600 mb-4">Our award-winning signature latte with premium arabica beans</p>
+              <div class="flex items-center justify-between">
+                <span class="text-2xl font-bold text-[#508d4e]">Rp 45.000</span>
+                <div class="flex items-center space-x-3">
+                  <button onclick="updateQuantity('item1', -1)" class="bg-red-500 hover:bg-red-600 text-white p-2 rounded-full transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" />
+                    </svg>
+                  </button>
+                  <span id="item1-quantity" class="text-xl font-semibold w-8 text-center">0</span>
+                  <button onclick="updateQuantity('item1', 1)" class="bg-[#508d4e] hover:bg-[#3e843b] text-white p-2 rounded-full transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Featured Item 2 -->
+          <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <div class="relative">
+              <img src="https://i.pinimg.com/736x/9b/70/35/9b703525cfe7c914ce09c87b980687f4.jpg" alt="Artisan Croissant" class="w-full h-48 object-cover" />
+              <span class="absolute top-4 right-4 bg-yellow-400 text-black px-3 py-1 rounded-full text-sm font-semibold">Best Seller</span>
+            </div>
+            <div class="p-6">
+              <h3 class="text-xl font-bold text-gray-900 mb-2">Artisan Croissant</h3>
+              <p class="text-gray-600 mb-4">Freshly baked butter croissant with premium French butter</p>
+              <div class="flex items-center justify-between">
+                <span class="text-2xl font-bold text-[#508d4e]">Rp 35.000</span>
+                <div class="flex items-center space-x-3">
+                  <button onclick="updateQuantity('item2', -1)" class="bg-red-500 hover:bg-red-600 text-white p-2 rounded-full transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" />
+                    </svg>
+                  </button>
+                  <span id="item2-quantity" class="text-xl font-semibold w-8 text-center">0</span>
+                  <button onclick="updateQuantity('item2', 1)" class="bg-[#508d4e] hover:bg-[#3e843b] text-white p-2 rounded-full transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Regular Items Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+          <!-- Regular Item 1 -->
+          <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1608649226842-f39257c9085f" alt="Americano" class="w-full h-48 object-cover" />
+            <div class="p-6">
+              <h3 class="text-xl font-bold text-gray-900 mb-2">Americano</h3>
+              <p class="text-gray-600 mb-4">Classic americano made with our house blend</p>
+              <div class="flex items-center justify-between">
+                <span class="text-2xl font-bold text-[#508d4e]">Rp 30.000</span>
+                <div class="flex items-center space-x-3">
+                  <button onclick="updateQuantity('item3', -1)" class="bg-red-500 hover:bg-red-600 text-white p-2 rounded-full transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" />
+                    </svg>
+                  </button>
+                  <span id="item3-quantity" class="text-xl font-semibold w-8 text-center">0</span>
+                  <button onclick="updateQuantity('item3', 1)" class="bg-[#508d4e] hover:bg-[#3e843b] text-white p-2 rounded-full transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Regular Item 2 -->
+          <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1551024506-0bccd828d307" alt="Cappuccino" class="w-full h-48 object-cover" />
+            <div class="p-6">
+              <h3 class="text-xl font-bold text-gray-900 mb-2">Cappuccino</h3>
+              <p class="text-gray-600 mb-4">Traditional cappuccino with perfect milk foam</p>
+              <div class="flex items-center justify-between">
+                <span class="text-2xl font-bold text-[#508d4e]">Rp 35.000</span>
+                <div class="flex items-center space-x-3">
+                  <button onclick="updateQuantity('item4', -1)" class="bg-red-500 hover:bg-red-600 text-white p-2 rounded-full transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" />
+                    </svg>
+                  </button>
+                  <span id="item4-quantity" class="text-xl font-semibold w-8 text-center">0</span>
+                  <button onclick="updateQuantity('item4', 1)" class="bg-[#508d4e] hover:bg-[#3e843b] text-white p-2 rounded-full transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Regular Item 3 -->
+          <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd" alt="Espresso" class="w-full h-48 object-cover" />
+            <div class="p-6">
+              <h3 class="text-xl font-bold text-gray-900 mb-2">Espresso</h3>
+              <p class="text-gray-600 mb-4">Pure and intense single shot espresso and so tasty</p>
+              <div class="flex items-center justify-between">
+                <span class="text-2xl font-bold text-[#508d4e]">Rp 25.000</span>
+                <div class="flex items-center space-x-3">
+                  <button onclick="updateQuantity('item5', -1)" class="bg-red-500 hover:bg-red-600 text-white p-2 rounded-full transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" />
+                    </svg>
+                  </button>
+                  <span id="item5-quantity" class="text-xl font-semibold w-8 text-center">0</span>
+                  <button onclick="updateQuantity('item5', 1)" class="bg-[#508d4e] hover:bg-[#3e843b] text-white p-2 rounded-full transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Regular Item 4 -->
+          <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93" alt="Cafe Latte" class="w-full h-48 object-cover" />
+            <div class="p-6">
+              <h3 class="text-xl font-bold text-gray-900 mb-2">Cafe Latte</h3>
+              <p class="text-gray-600 mb-4">Smooth and creamy latte with perfect balance</p>
+              <div class="flex items-center justify-between">
+                <span class="text-2xl font-bold text-[#508d4e]">Rp 35.000</span>
+                <div class="flex items-center space-x-3">
+                  <button onclick="updateQuantity('item6', -1)" class="bg-red-500 hover:bg-red-600 text-white p-2 rounded-full transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" />
+                    </svg>
+                  </button>
+                  <span id="item6-quantity" class="text-xl font-semibold w-8 text-center">0</span>
+                  <button onclick="updateQuantity('item6', 1)" class="bg-[#508d4e] hover:bg-[#3e843b] text-white p-2 rounded-full transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Regular Item 5 -->
+          <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <img src="https://i.pinimg.com/736x/f3/35/3d/f3353da22218a4de90629ea801d6d0ff.jpg" alt="Green Tea Latte" class="w-full h-48 object-cover" />
+            <div class="p-6">
+              <h3 class="text-xl font-bold text-gray-900 mb-2">Green Tea Latte</h3>
+              <p class="text-gray-600 mb-4">Premium matcha green tea with steamed milk</p>
+              <div class="flex items-center justify-between">
+                <span class="text-2xl font-bold text-[#508d4e]">Rp 38.000</span>
+                <div class="flex items-center space-x-3">
+                  <button onclick="updateQuantity('item7', -1)" class="bg-red-500 hover:bg-red-600 text-white p-2 rounded-full transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" />
+                    </svg>
+                  </button>
+                  <span id="item7-quantity" class="text-xl font-semibold w-8 text-center">0</span>
+                  <button onclick="updateQuantity('item7', 1)" class="bg-[#508d4e] hover:bg-[#3e843b] text-white p-2 rounded-full transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Regular Item 6 -->
+          <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1571658734974-e513dfb8b86b" alt="Chocolate Frappe" class="w-full h-48 object-cover" />
+            <div class="p-6">
+              <h3 class="text-xl font-bold text-gray-900 mb-2">Chocolate Frappe</h3>
+              <p class="text-gray-600 mb-4">Blended iced chocolate with whipped cream</p>
+              <div class="flex items-center justify-between">
+                <span class="text-2xl font-bold text-[#508d4e]">Rp 42.000</span>
+                <div class="flex items-center space-x-3">
+                  <button onclick="updateQuantity('item8', -1)" class="bg-red-500 hover:bg-red-600 text-white p-2 rounded-full transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" />
+                    </svg>
+                  </button>
+                  <span id="item8-quantity" class="text-xl font-semibold w-8 text-center">0</span>
+                  <button onclick="updateQuantity('item8', 1)" class="bg-[#508d4e] hover:bg-[#3e843b] text-white p-2 rounded-full transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Regular Item 7 -->
+          <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <img src="https://i.pinimg.com/736x/24/bf/2a/24bf2a5c04c5edcd5c4abee4ff78a3da.jpg" alt="Chocolate milk" class="w-full h-48 object-cover" />
+            <div class="p-6">
+              <h3 class="text-xl font-bold text-gray-900 mb-2">Chocolate milk</h3>
+              <p class="text-gray-600 mb-4">Blended iced chocolate and fresh milk and we put real choclate</p>
+              <div class="flex items-center justify-between">
+                <span class="text-2xl font-bold text-[#508d4e]">Rp 38.000</span>
+                <div class="flex items-center space-x-3">
+                  <button onclick="updateQuantity('item9', -1)" class="bg-red-500 hover:bg-red-600 text-white p-2 rounded-full transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" />
+                    </svg>
+                  </button>
+                  <span id="item9-quantity" class="text-xl font-semibold w-8 text-center">0</span>
+                  <button onclick="updateQuantity('item9', 1)" class="bg-[#508d4e] hover:bg-[#3e843b] text-white p-2 rounded-full transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Regular Item 8 -->
+          <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <img src="https://i.pinimg.com/736x/cf/9b/af/cf9bafa8f904bb4c2aacf06cebf46331.jpg" alt="croissant milk" class="w-full h-48 object-cover" />
+            <div class="p-6">
+              <h3 class="text-xl font-bold text-gray-900 mb-2">croissant milk</h3>
+              <p class="text-gray-600 mb-4">crousssant and plus with fresh milk, the milk make croissant better</p>
+              <div class="flex items-center justify-between">
+                <span class="text-2xl font-bold text-[#508d4e]">Rp 45.000</span>
+                <div class="flex items-center space-x-3">
+                  <button onclick="updateQuantity('item10', -1)" class="bg-red-500 hover:bg-red-600 text-white p-2 rounded-full transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" />
+                    </svg>
+                  </button>
+                  <span id="item10-quantity" class="text-xl font-semibold w-8 text-center">0</span>
+                  <button onclick="updateQuantity('item10', 1)" class="bg-[#508d4e] hover:bg-[#3e843b] text-white p-2 rounded-full transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Regular Items 2-4 (similar structure, different content) -->
+          <!-- Copy the above regular item structure 3 more times with different content -->
+        </div>
+
+        <!-- Submit Button -->
+        <div class="text-center">
+          <button onclick="submitOrder()" class="bg-[#508d4e] hover:bg-[#3e843b] text-white text-xl font-bold py-4 px-12 rounded-full transition-all duration-300 transform hover:scale-105 hover:shadow-lg uppercase tracking-wider">
+            Order Now via WhatsApp
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Feedback Section -->
+    <section class="py-20 bg-gradient-to-br from-black via-black to-[#1a2e19]">
+      <div class="container mx-auto px-4">
+        <div class="flex flex-col md:flex-row gap-12 items-center">
+          <!-- Left Side - Feedback Form -->
+          <div class="w-full md:w-1/2">
+            <h2 class="text-4xl font-bold text-white mb-8 relative">
+              Your Feedback
+              <span class="absolute bottom-0 left-0 w-24 h-1 bg-[#508d4e] transition-all duration-300 group-hover:w-full"></span>
+            </h2>
+
+            <form id="feedbackForm" class="space-y-6">
+              <!-- Name Input -->
+              <div class="relative group">
+                <input type="text" id="name" required class="w-full bg-transparent border-2 border-[#508d4e] rounded-lg px-4 py-3 text-white outline-none transition-all duration-300 focus:border-[#6ab567] peer" placeholder=" " />
+                <label
+                  for="name"
+                  class="absolute left-4 top-3 text-gray-400 transition-all duration-300 peer-focus:-top-7 peer-focus:text-[#6ab567] peer-focus:text-sm peer-placeholder-shown:top-3 peer-placeholder-shown:text-base -top-7 text-sm"
+                >
+                  Your Name
+                </label>
+              </div>
+
+              <!-- Age Input -->
+              <div class="relative group">
+                <input
+                  type="number"
+                  id="age"
+                  required
+                  min="1"
+                  max="120"
+                  class="w-full bg-transparent border-2 border-[#508d4e] rounded-lg px-4 py-3 text-white outline-none transition-all duration-300 focus:border-[#6ab567] peer"
+                  placeholder=" "
+                />
+                <label
+                  for="age"
+                  class="absolute left-4 top-3 text-gray-400 transition-all duration-300 peer-focus:-top-7 peer-focus:text-[#6ab567] peer-focus:text-sm peer-placeholder-shown:top-3 peer-placeholder-shown:text-base -top-7 text-sm"
+                >
+                  Your Age
+                </label>
+              </div>
+
+              <!-- Feedback Input -->
+              <div class="relative group">
+                <textarea
+                  id="feedback"
+                  required
+                  rows="4"
+                  class="w-full bg-transparent border-2 border-[#508d4e] rounded-lg px-4 py-3 text-white outline-none transition-all duration-300 focus:border-[#6ab567] peer"
+                  placeholder=" "
+                ></textarea>
+                <label
+                  for="feedback"
+                  class="absolute left-4 top-3 text-gray-400 transition-all duration-300 peer-focus:-top-7 peer-focus:text-[#6ab567] peer-focus:text-sm peer-placeholder-shown:top-3 peer-placeholder-shown:text-base -top-7 text-sm"
+                >
+                  Your Feedback
+                </label>
+              </div>
+
+              <!-- Submit Button -->
+              <button type="submit" class="w-full bg-[#508d4e] hover:bg-[#3e843b] text-white font-bold py-4 px-8 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg relative overflow-hidden group">
+                <span class="relative z-10">Submit Feedback</span>
+                <div class="absolute inset-0 bg-[#6ab567] transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
+              </button>
+            </form>
+          </div>
+
+          <!-- Right Side - Slideshow -->
+          <div class="w-full md:w-1/2 h-[500px] relative overflow-hidden rounded-lg shadow-2xl">
+            <!-- Slides -->
+            <div class="feedback-slides absolute inset-0 transition-opacity duration-1000">
+              <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24" alt="Coffee Shop 1" class="w-full h-full object-cover" />
+            </div>
+            <div class="feedback-slides absolute inset-0 transition-opacity duration-1000 opacity-0">
+              <img src="https://images.unsplash.com/photo-1534040385115-33dcb3acba5b" alt="Coffee Shop 2" class="w-full h-full object-cover" />
+            </div>
+            <div class="feedback-slides absolute inset-0 transition-opacity duration-1000 opacity-0">
+              <img src="https://images.unsplash.com/photo-1481833761820-0509d3217039" alt="Coffee Shop 3" class="w-full h-full object-cover" />
+            </div>
+            <div class="feedback-slides absolute inset-0 transition-opacity duration-1000 opacity-0">
+              <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93" alt="Coffee Shop 4" class="w-full h-full object-cover" />
+            </div>
+            <div class="feedback-slides absolute inset-0 transition-opacity duration-1000 opacity-0">
+              <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085" alt="Coffee Shop 5" class="w-full h-full object-cover" />
+            </div>
+
+            <!-- Slide Navigation -->
+            <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-3">
+              <button class="feedback-dot w-3 h-3 rounded-full bg-white transition-all duration-300"></button>
+              <button class="feedback-dot w-3 h-3 rounded-full bg-white/50 transition-all duration-300"></button>
+              <button class="feedback-dot w-3 h-3 rounded-full bg-white/50 transition-all duration-300"></button>
+              <button class="feedback-dot w-3 h-3 rounded-full bg-white/50 transition-all duration-300"></button>
+              <button class="feedback-dot w-3 h-3 rounded-full bg-white/50 transition-all duration-300"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="bg-gradient-to-br from-black via-black to-[#1a2e19] text-white py-10">
+      <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <!-- Kolom 1: Tentang Coffee Shop -->
+          <div>
+            <h2 class="text-3xl font-bold mb-4 relative inline-block">
+              About La Day Le
+              <span class="absolute bottom-0 left-0 w-20 h-1 bg-[#508d4e]"></span>
+            </h2>
+            <p class="text-gray-300 mb-4">La Day Le adalah tempat di mana Anda bisa menikmati kopi terbaik dengan suasana yang nyaman dan pelayanan yang ramah.</p>
+            <p class="text-gray-300 mb-2"><strong>Alamat:</strong> Jl. Kopi No. 123, Jakarta</p>
+            <p class="text-gray-300 mb-2"><strong>Email:</strong> contact@ladayle.com</p>
+            <p class="text-gray-300"><strong>Telepon:</strong> +62 812-3456-7890</p>
+          </div>
+
+          <!-- Kolom 2: Form Penilaian -->
+          <div>
+            <h2 class="text-3xl font-bold mb-4 relative inline-block">
+              Beri Penilaian
+              <span class="absolute bottom-0 left-0 w-20 h-1 bg-[#508d4e]"></span>
+            </h2>
+
+            <form id="ratingForm" class="space-y-4">
+              <div class="flex gap-4">
+                <label class="flex items-center gap-2 cursor-pointer">
+                  <input type="radio" name="rating" value="Suka" class="hidden peer" required />
+                  <span class="bg-[#508d4e] peer-checked:bg-[#6ab567] text-white py-2 px-4 rounded-lg transition-all duration-300 transform peer-checked:scale-105 hover:scale-105 hover:shadow-lg"> Suka </span>
+                </label>
+
+                <label class="flex items-center gap-2 cursor-pointer">
+                  <input type="radio" name="rating" value="Biasa Saja" class="hidden peer" />
+                  <span class="bg-gray-500 peer-checked:bg-gray-600 text-white py-2 px-4 rounded-lg transition-all duration-300 transform peer-checked:scale-105 hover:scale-105 hover:shadow-lg"> Biasa Saja </span>
+                </label>
+
+                <label class="flex items-center gap-2 cursor-pointer">
+                  <input type="radio" name="rating" value="Buruk" class="hidden peer" />
+                  <span class="bg-red-500 peer-checked:bg-red-600 text-white py-2 px-4 rounded-lg transition-all duration-300 transform peer-checked:scale-105 hover:scale-105 hover:shadow-lg"> Buruk </span>
+                </label>
+              </div>
+
+              <!-- Tombol Submit -->
+              <button type="submit" class="bg-[#508d4e] hover:bg-[#3e843b] text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg relative overflow-hidden group">
+                <span class="relative z-10">Kirim Penilaian</span>
+                <div class="absolute inset-0 bg-[#6ab567] transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Copyright -->
+        <div class="text-center text-gray-400 text-sm mt-10">&copy; 2025 La Day Le Coffee Shop. All Rights Reserved.</div>
+      </div>
+    </footer>
+
+    <script>
+      // Add smooth scroll when clicking the Order Now button
+      document.querySelector("button").addEventListener("click", () => {
+        // Add your order section scroll logic here
+        console.log("Order button clicked");
+      });
+
+      // Ensure video loads and plays properly
+      document.addEventListener("DOMContentLoaded", () => {
+        const video = document.querySelector("video");
+
+        // Handle video loading errors
+        video.addEventListener("error", () => {
+          console.error("Error loading video");
+          // You can add a fallback background image here
+          video.parentElement.style.backgroundColor = "#000";
+        });
+      });
+    </script>
+
+    <script>
+      // Lock scrolling initially
+      document.body.classList.add("scroll-lock");
+
+      // Get references to elements
+      const learnMoreButton = document.querySelector(".video-container button");
+
+      const aboutSection = document.querySelector(".py-20");
+
+      // Add click event to the Learn More button
+      learnMoreButton.addEventListener("click", () => {
+        // Remove scroll lock
+        document.body.classList.remove("scroll-lock");
+
+        // Smooth scroll to about section
+        aboutSection.scrollIntoView({ behavior: "smooth" });
+      });
+
+      // Ensure video loads and plays properly
+      document.addEventListener("DOMContentLoaded", () => {
+        const video = document.querySelector("video");
+
+        // Handle video loading errors
+        video.addEventListener("error", () => {
+          console.error("Error loading video");
+          // You can add a fallback background image here
+          video.parentElement.style.backgroundColor = "#000";
+        });
+      });
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const menuButton = document.getElementById("menuShortcut");
+        const menuSection = document.querySelector(".menu-title").closest("section");
+
+        menuButton.addEventListener("click", () => {
+          // Animasi klik tombol
+          menuButton.classList.add("clicked");
+          setTimeout(() => {
+            menuButton.classList.remove("clicked");
+          }, 500);
+
+          // Menghapus class scroll-lock jika ada
+          document.body.classList.remove("scroll-lock");
+
+          // Scroll ke bagian menu dengan efek smooth
+          menuSection.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+        });
+      });
+
+      // Slide indicator functionality
+      const slides = document.querySelectorAll(".slide");
+      const indicators = document.querySelectorAll(".bottom-8 button");
+      let currentSlide = 0;
+
+      function updateSlides(index) {
+        slides.forEach((slide, i) => {
+          slide.style.opacity = i === index ? "1" : "0";
+        });
+
+        indicators.forEach((indicator, i) => {
+          indicator.classList.toggle("w-8", i === index);
+          indicator.classList.toggle("bg-white", i === index);
+          indicator.classList.toggle("bg-white/50", i !== index);
+        });
+      }
+
+      indicators.forEach((indicator, index) => {
+        indicator.addEventListener("click", () => {
+          currentSlide = index;
+          updateSlides(currentSlide);
+        });
+      });
+
+      // Auto advance slides
+      setInterval(() => {
+        currentSlide = (currentSlide + 1) % slides.length;
+        updateSlides(currentSlide);
+      }, 5000);
+
+      // Menu items data
+      const menuItems = {
+        item1: { name: "Signature Latte", price: 45000 },
+        item2: { name: "Artisan Croissant", price: 35000 },
+        item3: { name: "Americano", price: 30000 },
+        item4: { name: "Cappuccino", price: 35000 },
+        item5: { name: "Espresso", price: 25000 },
+        item6: { name: "Cafe Latte", price: 35000 },
+        item7: { name: "Green Tea Latte", price: 38000 },
+        item8: { name: "Chocolate Frappe", price: 42000 },
+        item9: { name: "Chocolate milk", price: 38000 },
+        item10: { name: "Croissant milk", price: 45000 },
+        // Add more items as needed
+      };
+
+      // Store quantities
+      const quantities = {
+        item1: 0,
+        item2: 0,
+        item3: 0,
+        item4: 0,
+        item5: 0,
+        item6: 0,
+        item7: 0,
+        item8: 0,
+        item9: 0,
+        item10: 0,
+        // Add more items as needed
+      };
+
+      function updateQuantity(itemId, change) {
+        const newQuantity = Math.max(0, (quantities[itemId] || 0) + change);
+        quantities[itemId] = newQuantity;
+        document.getElementById(`${itemId}-quantity`).textContent = newQuantity;
+      }
+
+      function submitOrder() {
+        let message = "Halo, saya ingin memesan:%0A%0A";
+        let total = 0;
+
+        for (const [itemId, quantity] of Object.entries(quantities)) {
+          if (quantity > 0) {
+            const item = menuItems[itemId];
+            const itemTotal = item.price * quantity;
+            message += `${item.name} x${quantity} = Rp ${itemTotal.toLocaleString()}%0A`;
+            total += itemTotal;
+          }
+        }
+
+        if (total > 0) {
+          message += `%0ATotal: Rp ${total.toLocaleString()}`;
+          // Replace with your WhatsApp number
+          window.location.href = `https://wa.me/+6282123580728?text=${message}`;
+        } else {
+          alert("Please select at least one item");
+        }
+      }
+
+      // Feedback Form Animation
+      document.getElementById("feedbackForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        // Get form values
+        const name = document.getElementById("name").value;
+        const age = document.getElementById("age").value;
+        const feedback = document.getElementById("feedback").value;
+
+        // Here you can add code to handle the form submission
+        console.log("Feedback submitted:", { name, age, feedback });
+
+        // Reset form
+        this.reset();
+
+        // Show success message (you can customize this)
+        alert("Thank you for your feedback!");
+      });
+
+      // Feedback Slideshow
+      const feedbackSlides = document.querySelectorAll(".feedback-slides");
+      const feedbackDots = document.querySelectorAll(".feedback-dot");
+      let currentFeedbackSlide = 0;
+
+      function updateFeedbackSlides(index) {
+        feedbackSlides.forEach((slide, i) => {
+          slide.style.opacity = i === index ? "1" : "0";
+        });
+
+        feedbackDots.forEach((dot, i) => {
+          z;
+          dot.classList.toggle("bg-white", i === index);
+          dot.classList.toggle("bg-white/50", i !== index);
+          dot.classList.toggle("w-6", i === index);
+          dot.classList.toggle("w-3", i !== index);
+        });
+      }
+
+      // Add click events to dots
+      feedbackDots.forEach((dot, index) => {
+        dot.addEventListener("click", () => {
+          currentFeedbackSlide = index;
+          updateFeedbackSlides(currentFeedbackSlide);
+        });
+      });
+
+      // Auto advance slides
+      setInterval(() => {
+        currentFeedbackSlide = (currentFeedbackSlide + 1) % feedbackSlides.length;
+        updateFeedbackSlides(currentFeedbackSlide);
+      }, 5000);
+
+      // Hover effect for form inputs
+      const formInputs = document.querySelectorAll("input, textarea");
+      formInputs.forEach((input) => {
+        input.addEventListener("focus", () => {
+          input.parentElement.classList.add("scale-105");
+        });
+        input.addEventListener("blur", () => {
+          input.parentElement.classList.remove("scale-105");
+        });
+      });
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const menuShortcut = document.getElementById("menuShortcut");
+        const menuHeroSection = document.querySelector(".menu-title").closest("section");
+
+        menuShortcut.addEventListener("click", () => {
+          // Tambahkan class untuk animasi klik
+          menuShortcut.classList.add("clicked");
+
+          // Hapus class setelah animasi selesai
+          setTimeout(() => {
+            menuShortcut.classList.remove("clicked");
+          }, 500);
+
+          // Scroll ke menu hero section dengan animasi
+          menuHeroSection.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+        });
+
+        // Tampilkan/sembunyikan tombol berdasarkan posisi scroll
+        let lastScrollPosition = 0;
+
+        window.addEventListener("scroll", () => {
+          const currentScrollPosition = window.pageYOffset;
+
+          // Jika scroll ke bawah, sembunyikan tombol
+          if (currentScrollPosition > lastScrollPosition) {
+            menuShortcut.style.transform = "translateY(-100px)";
+          }
+          // Jika scroll ke atas, tampilkan tombol
+          else {
+            menuShortcut.style.transform = "translateY(0)";
+          }
+
+          lastScrollPosition = currentScrollPosition;
+        });
+      });
+
+      document.getElementById("ratingForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const selectedRating = document.querySelector('input[name="rating"]:checked');
+
+        if (selectedRating) {
+          alert("Terima kasih atas penilaian Anda: " + selectedRating.value);
+          this.reset();
+        } else {
+          alert("Silakan pilih salah satu penilaian.");
+        }
+      });
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const ratingOptions = document.querySelectorAll('input[name="rating"]');
+
+        ratingOptions.forEach((option) => {
+          option.addEventListener("change", () => {
+            // Hapus efek dari semua label
+            document.querySelectorAll("label span").forEach((span) => {
+              span.classList.remove("opacity-70"); // Kembalikan ke warna semula
+            });
+
+            // Tambahkan efek lebih gelap pada label yang dipilih
+            const selectedLabel = option.closest("label").querySelector("span");
+            selectedLabel.classList.add("opacity-70");
+          });
+        });
+      });
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const ratingOptions = document.querySelectorAll('input[name="rating"]');
+        let selectedOption = null;
+
+        ratingOptions.forEach((option) => {
+          option.addEventListener("click", (event) => {
+            // Jika tombol yang sama diklik dua kali, hapus pilihan
+            if (selectedOption === event.target) {
+              event.target.checked = false;
+              selectedOption = null;
+              resetHighlight();
+            } else {
+              selectedOption = event.target;
+              highlightSelection(selectedOption);
+            }
+          });
+        });
+
+        function highlightSelection(selected) {
+          // Hapus efek dari semua tombol
+          resetHighlight();
+
+          // Tambahkan efek gelap pada label yang dipilih
+          const selectedLabel = selected.closest("label").querySelector("span");
+          selectedLabel.classList.add("opacity-70");
+        }
+
+        function resetHighlight() {
+          document.querySelectorAll("label span").forEach((span) => {
+            span.classList.remove("opacity-70");
+          });
+        }
+      });
+    </script>
+  </body>
+</html>
